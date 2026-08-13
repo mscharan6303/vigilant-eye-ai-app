@@ -12,11 +12,14 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-const JWT_SECRET = 'supersecretkey123'; // In production use dotenv
+require('dotenv').config(); // Load environment variables
 
-mongoose.connect('mongodb://127.0.0.1:27017/vigilant_eye')
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey123'; // In production use dotenv
+
+const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/vigilant_eye';
+mongoose.connect(mongoURI)
   .then(async () => {
-    console.log('MongoDB connected to 127.0.0.1');
+    console.log(`MongoDB connected to ${mongoURI}`);
     await ensureDefaultCheckpoints();
   })
   .catch(err => console.error('MongoDB connection error:', err));
@@ -690,9 +693,9 @@ app.post('/api/supabase', async (req, res) => {
   }
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log(`Express server running on http://127.0.0.1:${PORT}`);
+  console.log(`Express server running on port ${PORT}`);
 });
 
 function isValidPlateFormat(plate) {
