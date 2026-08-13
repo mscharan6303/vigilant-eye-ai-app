@@ -7,6 +7,9 @@ export interface SupabaseResponse<T = any> {
 }
 
 const getBackendUrl = () => {
+  if (import.meta.env && import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
   if (typeof window !== 'undefined') {
     return `http://${window.location.hostname}:5000`;
   }
