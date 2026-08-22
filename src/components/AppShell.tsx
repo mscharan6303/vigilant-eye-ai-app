@@ -1,6 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, ScanLine, Bell, Search, History, LogOut, Shield, Languages, Database, MapPin, Upload, Radio } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getBackendUrl } from "@/integrations/supabase/client";
 import { useEffect, useState, type ReactNode } from "react";
 import { setLang, useLang, t, initLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -56,7 +56,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   // Global socket listener
   useEffect(() => {
-    const socket = io(typeof window !== "undefined" ? `http://${window.location.hostname}:5000` : "http://127.0.0.1:5000");
+    const socket = io(getBackendUrl());
     
     async function joinRoom() {
       const { data: { user } } = await supabase.auth.getUser();

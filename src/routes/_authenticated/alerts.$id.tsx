@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getBackendUrl } from "@/integrations/supabase/client";
 import { useServerFn } from "@tanstack/react-start";
 import { addAlertNote, setAlertState } from "@/lib/alerts.functions";
 import { generateVehicleReport } from "@/lib/pdf";
@@ -112,7 +112,7 @@ function AlertDetail() {
     load();
 
     // Listen to real-time events via Socket.io
-    const socket = io(typeof window !== "undefined" ? `http://${window.location.hostname}:5000` : "http://127.0.0.1:5000");
+    const socket = io(getBackendUrl());
     
     socket.emit("join", "central");
     if (alert?.routed_station_id) {

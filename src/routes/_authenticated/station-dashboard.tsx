@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, getBackendUrl } from "@/integrations/supabase/client";
 import { Shield, Bell, Navigation, Navigation2, Check, CheckCircle2, User, Loader2, MapPin, Radio, Car } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -89,7 +89,7 @@ export function StationDashboard() {
     loadData();
 
     // 3. Connect to WebSocket room for this station
-    const socket = io(typeof window !== "undefined" ? `http://${window.location.hostname}:5000` : "http://127.0.0.1:5000");
+    const socket = io(getBackendUrl());
     
     socket.emit("join", `station:${selectedStationId}`);
     console.log(`Joined socket room: station:${selectedStationId}`);
